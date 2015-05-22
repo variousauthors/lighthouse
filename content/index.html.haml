@@ -1,0 +1,23 @@
+---
+title: Home
+---
+
+//%img.brand-image{ :src => "ziggy.png" }
+
+.title
+  %h1
+    If you're hiring a Junior Programmer...
+
+    = @items["/modules/social_icons/"].compiled_content
+
+.content-space
+  .content
+    = @items["/modules/cover/"].compiled_content
+  .content
+    = @items["/modules/highlights/"].compiled_content
+  .content
+    = @items["/modules/work_history/"].compiled_content
+
+.footer
+  %h1
+    = "... you can't do better than a Ziggy!"

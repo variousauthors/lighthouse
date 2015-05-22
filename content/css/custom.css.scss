@@ -1,0 +1,150 @@
+$push: 10px;
+$soft: 10px;
+
+// custom colors
+$base02: #073642;
+$base01: #586e75;
+$base3: #fdf6e3;
+$base2: #eee8d5;
+$base1: #93a1a1;
+$blue: #268bd2;
+$cyan: #2aa198;
+$orange: #cb4b16;
+$green: #859900;
+
+// theme colors
+$h1-color: $base02;
+$h2-color: $base01;
+$primary: $blue;
+$secondary: $green;
+$background-color: $base3;
+$color: $base02;
+$experience-background: $base1;
+
+a.subtle {
+    color: $base02 !important;
+}
+
+body {
+    background-color: $background-color;
+    color: $color;
+    font-family: georgia;
+
+    h1 {
+        color: $h1-color;
+    }
+}
+
+.bg-red {
+    background-color: red;
+}
+
+.inline-block {
+    display: inline-block;
+}
+
+.hidden {
+    display: none;
+}
+
+.absolute {
+    position: absolute;
+}
+
+.relative {
+    position: relative;
+}
+
+.push-left {
+    margin-left: $push;
+}
+
+.push-right {
+    margin-right: $push;
+}
+
+.push-top {
+    margin-top: $push;
+}
+
+.push-half-bottom {
+    margin-bottom: $push/2;
+}
+
+.push-bottom {
+    margin-bottom: $push;
+}
+
+.soft {
+    padding: $soft;
+}
+
+.soft-left {
+    padding-left: $soft;
+}
+
+.soft-right {
+    padding-right: $soft;
+}
+
+.full-width {
+    width: 99%;
+
+}
+
+.half-width {
+    width: 50%;
+
+    &.inline-block {
+        width: 49%;
+    }
+}
+
+.title {
+    @extend .full-width;
+    @extend .push-bottom;
+    @extend .push-left;
+
+    .icons {
+      float: right;
+      margin-right: 40px;
+      margin-top: 10px;
+    }
+
+    .spacer {
+        display: inline-block;
+        margin-left: 20px;
+        content: "";
+    }
+}
+
+.footer {
+    @extend .full-width;
+    @extend .push-top;
+
+    text-align: right;
+}
+
+.content-space {
+    @extend .relative;
+    overflow-x: hidden;
+    overflow-y: hidden;
+
+    .content {
+        @extend .absolute;
+        @extend .full-width;
+
+        overflow-y: auto;
+        height: 100%;
+    }
+}
+
+.brand-image {
+    position: absolute;
+    left: -276px;
+    opacity: 0.5;
+    position: absolute;
+    top: 170px;
+    width: 693px;
+    z-index: -1;
+}
