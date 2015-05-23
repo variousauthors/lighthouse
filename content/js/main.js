@@ -1,4 +1,4 @@
-var WIDTH = 800;
+var WIDTH = 1024;
 var HEIGHT = 600;
 var RADIUS = Math.sqrt(Math.pow(WIDTH/2, 2) + Math.pow(HEIGHT/2, 2)) + Math.max(WIDTH, HEIGHT)/5;
 
@@ -15,6 +15,7 @@ function onDown (e) {
     var renderer = PIXI.autoDetectRenderer(WIDTH, HEIGHT, { antialias: true });
     document.body.appendChild(renderer.view);
 
+    var parent = new PIXI.Container();
     // create the root of the scene graph
     var stage = new PIXI.Container();
 
@@ -33,7 +34,18 @@ function onDown (e) {
 
     stage.addChild(triangle);
 
+    var museum = Game.museum.init();
+    var lighthouse_shadow = Game.lighthouse.init();
+    var lighthouse_light = Game.lighthouse.init();
+    lighthouse_light.alpha = 1;
+
     stage.mask = light;
+
+    stage.addChild(lighthouse_light);
+
+    parent.addChild(lighthouse_shadow);
+    parent.addChild(stage);
+    parent.addChild(museum);
 
     Game.timer = 0;
 
@@ -42,7 +54,7 @@ function onDown (e) {
 
         Game.light.update();
 
-        renderer.render(stage);
+        renderer.render(parent);
         requestAnimationFrame( animate );
     }
 
