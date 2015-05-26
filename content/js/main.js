@@ -2,6 +2,14 @@ var WIDTH = 1024;
 var HEIGHT = 600;
 var RADIUS = Math.sqrt(Math.pow(WIDTH/2, 2) + Math.pow(HEIGHT/2, 2)) + Math.max(WIDTH, HEIGHT)/5;
 
+// produces an (x, y) on the screen, above the lighthouse
+function randomPosition () {
+    var x = Math.random() * (WIDTH - 100);
+    var y = Math.random() * (HEIGHT - HEIGHT/3);
+
+    return [x, y];
+}
+
 function onDown (e) {
     var target = e.target;
     var point = e.data.getLocalPosition(target);
@@ -32,13 +40,21 @@ function onDown (e) {
     var light = Game.light.init();
     stage.addChild(light);
 
-    // make a hat (triangle)
-    var triangle = Game.debris.hat.init();
+    // make a hat
+    var hat = Game.debris.hat.init();
 
-    triangle.interactive = true;
-    triangle.on('mousedown', onDown);
+    hat.interactive = true;
+    hat.on('mousedown', onDown);
 
-    stage.addChild(triangle);
+    stage.addChild(hat);
+
+    // make an apple
+    var apple = Game.debris.apple.init();
+
+    apple.interactive = true;
+    apple.on('mousedown', onDown);
+
+    stage.addChild(apple);
 
     var museum = Game.museum.init();
     var lighthouse_shadow = Game.lighthouse.init();
@@ -66,11 +82,11 @@ function onDown (e) {
         requestAnimationFrame( animate );
     }
 
-    // when the light leaves one half of the screen, the objects on that half get shuffled about
+    // objects positioned randomly about the screen such that they are in front of the lighthouse
+    // there shouldn't always be objects on every pass, make it random
+    //
+    // every time the light passes behind the lighthouse, shuffle all objects
 
-    // when the player clicks on an object, if it is visible, they get the museum entry
-
-    // run the render loop
     animate();
 }());
 

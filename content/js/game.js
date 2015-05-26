@@ -63,8 +63,9 @@ Game.debris = {
     hat: {
         init: function () {
             var sprite = PIXI.Sprite.fromImage('images/hat.png');
+            var position = randomPosition();
 
-            sprite.position.set(230,264);
+            sprite.position.set(position[0], position[1]);
             sprite.scale.x = 0.5;
             sprite.scale.y = 0.5;
             sprite.name = "hat";
@@ -73,9 +74,24 @@ Game.debris = {
 
             return sprite;
         },
-        text: "Hello World!"
+        text: "HAT TEXT"
     },
-    chest: {}
+    apple: {
+        init: function () {
+            var sprite = PIXI.Sprite.fromImage('images/iambitten.png');
+            var position = randomPosition();
+
+            sprite.position.set(position[0], position[1]);
+            sprite.scale.x = 0.1;
+            sprite.scale.y = 0.1;
+            sprite.name = "apple";
+
+            Game.entities.apple = sprite;
+
+            return sprite;
+        },
+        text: "APPLE TEXT"
+    }
 };
 
 Game.museum = {
