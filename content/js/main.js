@@ -6,9 +6,13 @@ function onDown (e) {
     var target = e.target;
     var point = e.data.getLocalPosition(target);
 
-    if (! Game.graphics.light.containsPoint(point)) { return false; }
+    Game.museum.deselect();
 
-    console.log("YESS");
+    if (! Game.entities.light.containsPoint(point)) {
+        return false;
+    }
+
+    Game.museum.select(target.name);
 }
 
 (function () {
@@ -21,6 +25,8 @@ function onDown (e) {
 
     var background = Game.background.init();
     stage.addChild(background);
+    background.interactive = true;
+    background.on("mousedown", onDown);
 
     // make a beam of light
     var light = Game.light.init();
@@ -50,9 +56,11 @@ function onDown (e) {
     Game.timer = 0;
 
     function animate() {
-        Game.timer += 0.1;
+        var dt = 0.1;
+        Game.timer += dt;
 
-        Game.light.update();
+//        Game.light.update(dt);
+        Game.museum.update(dt);
 
         renderer.render(parent);
         requestAnimationFrame( animate );
