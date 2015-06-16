@@ -3,6 +3,8 @@ var Game = { };
 Game.selected = "hat";
 Game.entities = {};
 Game.light = {
+    rate: 4,
+    timer: 0,
     init: function () {
         var graphics = new PIXI.Graphics();
         graphics.position.x = WIDTH/2 + WIDTH/8;
@@ -12,9 +14,9 @@ Game.light = {
 
         return graphics
     },
-    update: function () {
-        var step = (2*Math.PI)/48;
-        var theta = Game.timer*step;
+    update: function (dt) {
+        Game.light.timer += (dt / Game.light.rate) % 1;
+        var theta = Game.light.timer*(2*Math.PI);
         var arc = Math.PI/8;
         var light = Game.entities.light;
 
@@ -63,9 +65,6 @@ Game.debris = {
     hat: {
         init: function () {
             var sprite = PIXI.Sprite.fromImage('images/hat.png');
-            var position = randomPosition();
-
-            sprite.position.set(position[0], position[1]);
             sprite.scale.x = 0.5;
             sprite.scale.y = 0.5;
             sprite.name = "hat";
@@ -79,9 +78,6 @@ Game.debris = {
     apple: {
         init: function () {
             var sprite = PIXI.Sprite.fromImage('images/iambitten.png');
-            var position = randomPosition();
-
-            sprite.position.set(position[0], position[1]);
             sprite.scale.x = 0.1;
             sprite.scale.y = 0.1;
             sprite.name = "apple";

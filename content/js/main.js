@@ -40,21 +40,20 @@ function onDown (e) {
     var light = Game.light.init();
     stage.addChild(light);
 
-    // make a hat
-    var hat = Game.debris.hat.init();
+    // initialize the debris
+    Object.keys(Game.debris).forEach(function (key, index) {
+        var debris = Game.debris[key].init();
+        var position;
 
-    hat.interactive = true;
-    hat.on('mousedown', onDown);
+        debris.interactive = true;
+        debris.on('mousedown', onDown);
 
-    stage.addChild(hat);
+        position = randomPosition();
 
-    // make an apple
-    var apple = Game.debris.apple.init();
+        debris.position.set(position[0], position[1]);
 
-    apple.interactive = true;
-    apple.on('mousedown', onDown);
-
-    stage.addChild(apple);
+        stage.addChild(debris);
+    });
 
     var museum = Game.museum.init();
     var lighthouse_shadow = Game.lighthouse.init();
@@ -70,13 +69,23 @@ function onDown (e) {
     parent.addChild(museum);
 
     Game.timer = 0;
+    Game.tic = 0;
 
     function animate() {
-        var dt = 0.1;
-        Game.timer += dt;
+        var dt = 0.016;
+        var next = (Game.timer + dt) % 1;
 
-//        Game.light.update(dt);
+        // whenever the game timer
+        if (next < Game.timer) {
+            Game.tic += 1;
+            console.log(Game.tic);
+        } else {
+        }
+
+        Game.light.update(dt);
         Game.museum.update(dt);
+
+        Game.timer = next;
 
         renderer.render(parent);
         requestAnimationFrame( animate );
