@@ -1,9 +1,9 @@
 
 var Game = { };
-Game.selected = "hat";
+Game.selected = null;
 Game.entities = {};
 Game.light = {
-    rate: 4,
+    rate: 8,
     timer: 0,
     init: function () {
         var graphics = new PIXI.Graphics();
@@ -16,7 +16,7 @@ Game.light = {
     },
     update: function (dt) {
         Game.light.timer += (dt / Game.light.rate) % 1;
-        var theta = Game.light.timer*(2*Math.PI);
+        var theta = Game.light.timer*(2*Math.PI) + Math.PI/4;
         var arc = Math.PI/8;
         var light = Game.entities.light;
 
@@ -92,9 +92,10 @@ Game.debris = {
 
 Game.museum = {
     select: function (name) {
-        if (Game.debris[name] === null) { return false; }
+        if (Game.debris[name] === undefined) { return false; }
 
         Game.selected = Game.debris[name];
+        console.log(Game.selected);
         Game.entities.information.text = Game.selected.text;
     },
     deselect: function () {
@@ -102,7 +103,7 @@ Game.museum = {
     },
     update: function (dt) {
         var debris = Game.debris[Game.selected];
-        var speed = 100;
+        var speed = 1000;
 
         if (Game.selected === null) {
             if (Game.entities.dialogueBox.position.y <= (HEIGHT + 1)) {

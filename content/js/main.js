@@ -11,8 +11,9 @@ function randomPosition () {
 }
 
 function onDown (e) {
+    console.log("in onDown");
     var target = e.target;
-    var point = e.data.getLocalPosition(target);
+    var point = e.data.getLocalPosition(target.parent);
 
     Game.museum.deselect();
 
@@ -79,7 +80,8 @@ function onDown (e) {
             Game.tic += 1;
 
             // every fourth tic
-            if ((Game.tic % Game.light.rate) == 0) {
+            if ((Game.tic % (Game.light.rate)) == 0) {
+                console.log("shuffle");
                 // shuffle the debris
                 stage.children.forEach(function (object, index) {
                     var debris = Game.debris[object.name];
