@@ -101,10 +101,19 @@ Game.museum = {
 
         Game.selected = Game.debris[name];
         Game.entities.information.text = Game.selected.text;
-        Game.selected.audio.play();
+
+        if (Game.selected.audio !== undefined) {
+            Game.selected.audio.play();
+        }
     },
     deselect: function () {
-        Game.selected.audio.stop();
+        if (Game.selected.audio !== undefined) {
+            Game.selected.audio.fadeOut(0.0, 3000, function () {
+                this.volume(1);
+                this.stop();
+            }.bind(Game.selected.audio));
+        }
+
         Game.selected = null;
     },
     update: function (dt) {
