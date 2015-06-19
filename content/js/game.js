@@ -52,7 +52,7 @@ Game.background = {
 }
 Game.lighthouse = {
     init: function () {
-        var lighthouse = new PIXI.Sprite.fromImage('images/lighthouse.png');
+        var lighthouse = new PIXI.Sprite.fromImage('sources/images/lighthouse.png');
 
         lighthouse.x = 270;
         lighthouse.y = 235;
@@ -61,10 +61,13 @@ Game.lighthouse = {
         return lighthouse;
     }
 }
+var GR = new Howl({
+            urls: [ 'sources/audio/03 Ancient Mars.m4a' ]
+        });
 Game.debris = {
     hat: {
         init: function () {
-            var sprite = PIXI.Sprite.fromImage('images/hat.png');
+            var sprite = PIXI.Sprite.fromImage('sources/images/hat.png');
             sprite.scale.x = 0.5;
             sprite.scale.y = 0.5;
             sprite.name = "hat";
@@ -73,11 +76,12 @@ Game.debris = {
 
             return sprite;
         },
-        text: "HAT TEXT"
+        text: "HAT TEXT",
+        audio: GR
     },
     apple: {
         init: function () {
-            var sprite = PIXI.Sprite.fromImage('images/iambitten.png');
+            var sprite = PIXI.Sprite.fromImage('sources/images/iambitten.png');
             sprite.scale.x = 0.1;
             sprite.scale.y = 0.1;
             sprite.name = "apple";
@@ -86,7 +90,8 @@ Game.debris = {
 
             return sprite;
         },
-        text: "APPLE TEXT"
+        text: "APPLE TEXT",
+        audio: GR
     }
 };
 
@@ -95,10 +100,11 @@ Game.museum = {
         if (Game.debris[name] === undefined) { return false; }
 
         Game.selected = Game.debris[name];
-        console.log(Game.selected);
         Game.entities.information.text = Game.selected.text;
+        Game.selected.audio.play();
     },
     deselect: function () {
+        Game.selected.audio.stop();
         Game.selected = null;
     },
     update: function (dt) {
@@ -112,6 +118,7 @@ Game.museum = {
             }
 
         } else if (Game.entities.dialogueBox.position.y > (HEIGHT - Game.entities.dialogueBox.height - 10)) {
+
             // tween the menu into place
             Game.entities.dialogueBox.position.y -= speed*dt
         }

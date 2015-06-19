@@ -11,11 +11,12 @@ function randomPosition () {
 }
 
 function onDown (e) {
-    console.log("in onDown");
     var target = e.target;
     var point = e.data.getLocalPosition(target.parent);
 
-    Game.museum.deselect();
+    if (Game.selected) {
+        Game.museum.deselect();
+    }
 
     if (! Game.entities.light.containsPoint(point)) {
         return false;
@@ -81,7 +82,6 @@ function onDown (e) {
 
             // every fourth tic
             if ((Game.tic % (Game.light.rate)) == 0) {
-                console.log("shuffle");
                 // shuffle the debris
                 stage.children.forEach(function (object, index) {
                     var debris = Game.debris[object.name];
