@@ -55,6 +55,8 @@ function onDown (e) {
         position = randomPosition();
 
         debris.position.set(position[0], position[1]);
+        debris.anchor.x = 0.5;
+        debris.anchor.y = 0.5;
         debris.visible = false;
 
         Game.debris[key].position = new PIXI.Point(debris.position.x, debris.position.y);
@@ -121,8 +123,10 @@ function onDown (e) {
                     // the object bobs up and down gently
                     // debris.position stores the objects coords sans bob
                     var y = reach * Math.sin(Game.wave*2*Math.PI);
+                    var theta = 0.1*Math.sin(Game.wave*2*Math.PI);
 
                     object.position.set(debris.position.x, debris.position.y + y);
+                    object.rotation = theta;
                 }
             }
         });
