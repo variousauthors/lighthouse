@@ -61,15 +61,11 @@ Game.lighthouse = {
         return lighthouse;
     }
 }
-var GR = new Howl({
-            urls: [ 'sources/audio/03 Ancient Mars.m4a' ]
-        });
+
 Game.debris = {
     hat: {
         init: function () {
-            var sprite = PIXI.Sprite.fromImage('sources/images/hat.png');
-            sprite.scale.x = 0.5;
-            sprite.scale.y = 0.5;
+            var sprite = PIXI.Sprite.fromImage('sources/images/hat_small.png');
             sprite.name = "hat";
 
             Game.entities.hat = sprite;
@@ -77,13 +73,13 @@ Game.debris = {
             return sprite;
         },
         text: "HAT TEXT",
-        audio: GR
+        audio: new Howl({
+            urls: [ 'sources/audio/mp3/hat.mp3', 'sources/audio/ogg/hat.ogg' ]
+        })
     },
     apple: {
         init: function () {
-            var sprite = PIXI.Sprite.fromImage('sources/images/iambitten.png');
-            sprite.scale.x = 0.1;
-            sprite.scale.y = 0.1;
+            var sprite = PIXI.Sprite.fromImage('sources/images/apple_small.png');
             sprite.name = "apple";
 
             Game.entities.apple = sprite;
@@ -91,7 +87,51 @@ Game.debris = {
             return sprite;
         },
         text: "APPLE TEXT",
-        audio: GR
+        audio: new Howl({
+            urls: [ 'sources/audio/mp3/apple.mp3', 'sources/audio/ogg/apple.ogg' ]
+        })
+    },
+    whale: {
+        init: function () {
+            var sprite = PIXI.Sprite.fromImage('sources/images/whale_small.png');
+            sprite.name = "whale";
+
+            Game.entities.whale = sprite;
+
+            return sprite;
+        },
+        text: "WHALE TEXT",
+        audio: new Howl({
+            urls: [ 'sources/audio/mp3/whale.mp3', 'sources/audio/ogg/whale.ogg' ]
+        })
+    },
+    goldfish: {
+        init: function () {
+            var sprite = PIXI.Sprite.fromImage('sources/images/goldfish_small.png');
+            sprite.name = "goldfish";
+
+            Game.entities.goldfish = sprite;
+
+            return sprite;
+        },
+        text: "goldfish TEXT",
+        audio: new Howl({
+            urls: [ 'sources/audio/mp3/goldfish.mp3', 'sources/audio/ogg/goldfish.ogg' ]
+        })
+    },
+    goldfish: {
+        init: function () {
+            var sprite = PIXI.Sprite.fromImage('sources/images/goldfish_small.png');
+            sprite.name = "goldfish";
+
+            Game.entities.goldfish = sprite;
+
+            return sprite;
+        },
+        text: "goldfish TEXT",
+        audio: new Howl({
+            urls: [ 'sources/audio/mp3/goldfish.mp3', 'sources/audio/ogg/goldfish.ogg' ]
+        })
     }
 };
 
