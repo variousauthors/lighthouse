@@ -76,26 +76,34 @@ function onDown (e) {
     function animate() {
         var dt = 0.016;
         var next = (Game.timer + dt) % 1;
+        var shuffle = false;
 
         if (next < Game.timer) {
             Game.tic += 1;
 
             // every fourth tic
             if ((Game.tic % (Game.light.rate)) == 0) {
-                // shuffle the debris
-                stage.children.forEach(function (object, index) {
-                    var debris = Game.debris[object.name];
-                    var position;
-
-                    if (debris !== undefined) {
-                        position = randomPosition();
-
-                        object.position.set(position[0], position[1]);
-                    }
-                });
+                shuffle = true;
             }
         }
 
+        // TODO this should move into an update function
+        stage.children.forEach(function (object, index) {
+            var debris = Game.debris[object.name];
+            var position;
+
+            if (debris !== undefined) {
+                if (shuffle === true) {
+                    // shuffle the debris
+                    position = randomPosition();
+
+                    object.position.set(position[0], position[1]);
+                } else {
+                    // the object bobs up and down gently
+
+                }
+            }
+        });
 
         Game.light.update(dt);
         Game.museum.update(dt);
