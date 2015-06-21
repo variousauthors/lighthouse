@@ -57,6 +57,8 @@ function onDown (e) {
         debris.position.set(position[0], position[1]);
         debris.visible = false;
 
+        Game.debris[key].position = new PIXI.Point(debris.position.x, debris.position.y);
+
         foreground.addChild(debris);
     });
 
@@ -78,6 +80,7 @@ function onDown (e) {
 
     Game.timer = 0;
     Game.tic = 0;
+    Game.wave = 0;
 
     function animate() {
         var dt = 0.016;
@@ -93,7 +96,6 @@ function onDown (e) {
             }
         }
 
-
         // TODO this should move into an update function
         Game.foreground.children.forEach(function (object, index) {
             var debris = Game.debris[object.name];
@@ -106,14 +108,21 @@ function onDown (e) {
                         // shuffle the debris
                         position = randomPosition();
 
+                        debris.position.set(position[0], position[1]);
                         object.position.set(position[0], position[1]);
+
                         object.visible = true;
                     } else {
                         object.visible = false;
                     }
                 } else {
-                    // the object bobs up and down gently
+                    var reach = object.height/10;
 
+                    // the object bobs up and down gently
+                    // debris.position stores the objects coords sans bob
+                    var y = reach * Math.sin(Game.wave*2*Math.PI);
+
+                    object.position.set(debris.position.x, debris.position.y + y);
                 }
             }
         });
@@ -121,6 +130,7 @@ function onDown (e) {
         Game.light.update(dt);
         Game.museum.update(dt);
 
+        Game.wave = (Game.wave + dt/4) % 1;
         Game.timer = next;
 
         renderer.render(parent);
