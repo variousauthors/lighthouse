@@ -42,6 +42,8 @@ function onDown (e) {
     var light = Game.light.init();
     stage.addChild(light);
 
+    var foreground = new PIXI.Container();
+
     // initialize the debris
     Object.keys(Game.debris).forEach(function (key, index) {
         var debris = Game.debris[key].init();
@@ -53,9 +55,13 @@ function onDown (e) {
         position = randomPosition();
 
         debris.position.set(position[0], position[1]);
+        debris.visible = false;
 
-        stage.addChild(debris);
+        foreground.addChild(debris);
     });
+
+    stage.addChild(foreground);
+    Game.foreground = foreground;
 
     var museum = Game.museum.init();
     var lighthouse_shadow = Game.lighthouse.init();
@@ -87,17 +93,24 @@ function onDown (e) {
             }
         }
 
+
         // TODO this should move into an update function
-        stage.children.forEach(function (object, index) {
+        Game.foreground.children.forEach(function (object, index) {
             var debris = Game.debris[object.name];
             var position;
+            var rnd = ((Math.random() * 10)|0) % (Game.foreground.children.length/2);
 
             if (debris !== undefined) {
                 if (shuffle === true) {
-                    // shuffle the debris
-                    position = randomPosition();
+                    if (rnd == 0) {
+                        // shuffle the debris
+                        position = randomPosition();
 
-                    object.position.set(position[0], position[1]);
+                        object.position.set(position[0], position[1]);
+                        object.visible = true;
+                    } else {
+                        object.visible = false;
+                    }
                 } else {
                     // the object bobs up and down gently
 
