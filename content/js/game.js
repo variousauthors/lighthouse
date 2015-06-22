@@ -8,7 +8,7 @@ Game.light = {
     init: function () {
         var graphics = new PIXI.Graphics();
         graphics.position.x = WIDTH/2 + WIDTH/8;
-        graphics.position.y = HEIGHT/2 + HEIGHT/4;
+        graphics.position.y = HEIGHT/2 + HEIGHT/4 + HEIGHT; // adding HEIGHT again to offset for the intro
 
         Game.entities.light = graphics;
 
@@ -16,14 +16,14 @@ Game.light = {
     },
     update: function (dt) {
         Game.light.timer += (dt / Game.light.rate) % 1;
-        var theta = Game.light.timer*(2*Math.PI) + Math.PI/4;
+        var theta = Game.light.timer*(2*Math.PI) + Math.PI;
         var arc = Math.PI/6;
         var light = Game.entities.light;
 
-        var cx_1 = RADIUS*Math.cos(theta) - 200;
-        var cy_1 = RADIUS*Math.sin(theta) - 200;
-        var cx_2 = RADIUS*Math.cos(theta + arc) - 200;
-        var cy_2 = RADIUS*Math.sin(theta + arc) - 200;
+        var cx_1 = RADIUS*Math.cos(theta);
+        var cy_1 = RADIUS*Math.sin(theta);
+        var cx_2 = RADIUS*Math.cos(theta + arc);
+        var cy_2 = RADIUS*Math.sin(theta + arc);
 
         light.clear();
 
@@ -38,16 +38,12 @@ Game.light = {
 }
 Game.background = {
     init: function () {
-        var graphics = new PIXI.Graphics();
-
+        var lighthouse = new PIXI.Sprite.fromImage('sources/images/ocean.png');
         // set a fill and a line style again and draw a rectangle
-        graphics.lineStyle(2, 0x0000FF, 1);
-        graphics.beginFill(0x1099bb, 1);
-        graphics.drawRect(0, 0, WIDTH, HEIGHT);
 
-        Game.entities.background = graphics;
+        Game.entities.background = lighthouse;
 
-        return graphics;
+        return lighthouse;
     }
 }
 Game.lighthouse = {
@@ -55,7 +51,7 @@ Game.lighthouse = {
         var lighthouse = new PIXI.Sprite.fromImage('sources/images/lighthouse.png');
 
         lighthouse.x = 270;
-        lighthouse.y = 235;
+        lighthouse.y = 235 + HEIGHT ;
         lighthouse.alpha = 0.3;
 
         return lighthouse;
@@ -236,5 +232,31 @@ Game.museum = {
         Game.entities.dialogueBox = container;
 
         return container;
+    }
+}
+
+Game.intro = {
+    playing: true,
+    timer: -5,
+    start: false,
+    update: function (dt) {
+        if (Game.intro.timer < 0) {
+            // wait
+
+        } else {
+            if (Game.intro.start === false) {
+                Game.intro.start = true;
+
+                // reset the light timer so that it makes a second pass right away
+                Game.light.timer = 0;
+            }
+
+            if (Game.stage.position.y > -600) {
+                Game.stage.position.set(Game.stage.position.x, Game.stage.position.y - 100*dt);
+                Game.shadow_box.position.set(Game.shadow_box.position.x, Game.shadow_box.position.y - 100*dt);
+            }
+        }
+
+        Game.intro.timer += dt;
     }
 }

@@ -1,11 +1,11 @@
 var WIDTH = 1024;
 var HEIGHT = 600;
-var RADIUS = Math.sqrt(Math.pow(WIDTH/2, 2) + Math.pow(HEIGHT/2, 2)) + Math.max(WIDTH, HEIGHT)/5;
+var RADIUS = 1200;
 
 // produces an (x, y) on the screen, above the lighthouse
 function randomPosition () {
     var x = Math.random() * (WIDTH - 100);
-    var y = Math.random() * (HEIGHT - HEIGHT/3);
+    var y = Math.random() * (HEIGHT - HEIGHT/3) + HEIGHT; // offset by HEIGHT because of the intro
 
     return [x, y];
 }
@@ -30,6 +30,7 @@ function onDown (e) {
     document.body.appendChild(renderer.view);
 
     var parent = new PIXI.Container();
+    var shadow_box = new PIXI.Container();
     // create the root of the scene graph
     var stage = new PIXI.Container();
 
@@ -76,10 +77,15 @@ function onDown (e) {
 
     stage.addChild(lighthouse_light);
 
-    parent.addChild(lighthouse_shadow);
+    shadow_box.addChild(lighthouse_shadow);
+
     parent.addChild(stage);
+    parent.addChild(shadow_box);
     parent.addChild(museum);
 
+    Game.parent = parent;
+    Game.stage = stage;
+    Game.shadow_box = shadow_box;
     Game.timer = 0;
     Game.tic = 0;
     Game.wave = 0;
@@ -89,11 +95,15 @@ function onDown (e) {
         var dt = 0.016;
         var next = (Game.timer + dt) % 1;
 
+        if (Game.intro.playing == true) {
+            Game.intro.update(dt);
+        }
+
         if (next < Game.timer) {
             Game.tic += 1;
 
             // every fourth tic
-            if ((Game.tic % (Game.light.rate)) == 0) {
+            if ((Game.tic % (Game.light.rate)) == 10) {
                 Game.shuffle = true;
             }
         }
