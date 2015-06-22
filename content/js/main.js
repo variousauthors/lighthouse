@@ -12,7 +12,7 @@ function randomPosition () {
 
 function onDown (e) {
     var target = e.target;
-    var point = e.data.getLocalPosition(target.parent);
+    var point = e.data.getLocalPosition(Game.stage.parent); // relative to the stage container
 
     if (Game.selected) {
         Game.museum.deselect();
