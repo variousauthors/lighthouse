@@ -39,6 +39,9 @@ function onDown (e) {
     background.interactive = true;
     background.on("mousedown", onDown);
 
+    var title = Game.title.init();
+    stage.addChild(title);
+
     // make a beam of light
     var light = Game.light.init();
     stage.addChild(light);
@@ -103,7 +106,7 @@ function onDown (e) {
             Game.tic += 1;
 
             // every fourth tic
-            if ((Game.tic % (Game.light.rate)) == 10) {
+            if ((Game.tic % (Game.light.rate)) == 0) {
                 Game.shuffle = true;
             }
         }

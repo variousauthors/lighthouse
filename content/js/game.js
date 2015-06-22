@@ -58,6 +58,14 @@ Game.lighthouse = {
     }
 }
 
+Game.title = {
+    init: function () {
+        var title = new PIXI.Sprite.fromImage('sources/images/title.png');
+
+        return title;
+    }
+}
+
 Game.debris = {
     hat: {
         init: function () {
