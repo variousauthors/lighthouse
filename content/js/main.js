@@ -83,18 +83,18 @@ function onDown (e) {
     Game.timer = 0;
     Game.tic = 0;
     Game.wave = 0;
+    Game.shuffle = true;
 
     function animate() {
         var dt = 0.016;
         var next = (Game.timer + dt) % 1;
-        var shuffle = false;
 
         if (next < Game.timer) {
             Game.tic += 1;
 
             // every fourth tic
             if ((Game.tic % (Game.light.rate)) == 0) {
-                shuffle = true;
+                Game.shuffle = true;
             }
         }
 
@@ -105,7 +105,7 @@ function onDown (e) {
             var rnd = ((Math.random() * 10)|0) % (Game.foreground.children.length/2);
 
             if (debris !== undefined) {
-                if (shuffle === true) {
+                if (Game.shuffle === true) {
                     if (rnd == 0) {
                         // shuffle the debris
                         position = randomPosition();
@@ -136,6 +136,7 @@ function onDown (e) {
 
         Game.wave = (Game.wave + dt/4) % 1;
         Game.timer = next;
+        Game.shuffle = false;
 
         renderer.render(parent);
         requestAnimationFrame( animate );

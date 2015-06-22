@@ -3,7 +3,7 @@ var Game = { };
 Game.selected = null;
 Game.entities = {};
 Game.light = {
-    rate: 8,
+    rate: 14,
     timer: 0,
     init: function () {
         var graphics = new PIXI.Graphics();
@@ -17,7 +17,7 @@ Game.light = {
     update: function (dt) {
         Game.light.timer += (dt / Game.light.rate) % 1;
         var theta = Game.light.timer*(2*Math.PI) + Math.PI/4;
-        var arc = Math.PI/8;
+        var arc = Math.PI/6;
         var light = Game.entities.light;
 
         var cx_1 = RADIUS*Math.cos(theta) - 200;
