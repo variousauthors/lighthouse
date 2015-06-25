@@ -78,6 +78,7 @@ Game.debris = {
         },
         text: "HAT TEXT",
         audio: new Howl({
+            volume: 0.5,
             urls: [ 'sources/audio/mp3/hat.mp3', 'sources/audio/ogg/hat.ogg' ]
         })
     },
@@ -92,6 +93,7 @@ Game.debris = {
         },
         text: "APPLE TEXT",
         audio: new Howl({
+            volume: 0.5,
             urls: [ 'sources/audio/mp3/apple.mp3', 'sources/audio/ogg/apple.ogg' ]
         })
     },
@@ -106,6 +108,7 @@ Game.debris = {
         },
         text: "WHALE TEXT",
         audio: new Howl({
+            volume: 0.5,
             urls: [ 'sources/audio/mp3/whale.mp3', 'sources/audio/ogg/whale.ogg' ]
         })
     },
@@ -120,6 +123,7 @@ Game.debris = {
         },
         text: "goldfish TEXT",
         audio: new Howl({
+            volume: 0.5,
             urls: [ 'sources/audio/mp3/goldfish.mp3', 'sources/audio/ogg/goldfish.ogg' ]
         })
     },
@@ -134,7 +138,38 @@ Game.debris = {
         },
         text: "goldfish TEXT",
         audio: new Howl({
+            volume: 0.5,
             urls: [ 'sources/audio/mp3/goldfish.mp3', 'sources/audio/ogg/goldfish.ogg' ]
+        })
+    },
+    book: {
+        init: function () {
+            var sprite = PIXI.Sprite.fromImage('sources/images/book_small.png');
+            sprite.name = "book";
+
+            Game.entities.book = sprite;
+
+            return sprite;
+        },
+        text: "Book TEXT",
+        audio: new Howl({
+            volume: 0.5,
+            urls: [ 'sources/audio/mp3/book.mp3', 'sources/audio/ogg/book.ogg' ]
+        })
+    },
+    chest_of_drawers: {
+        init: function () {
+            var sprite = PIXI.Sprite.fromImage('sources/images/chest_small.png');
+            sprite.name = "chest_of_drawers";
+
+            Game.entities.chest_of_drawers = sprite;
+
+            return sprite;
+        },
+        text: "chest_of_drawers TEXT",
+        audio: new Howl({
+            volume: 0.5,
+            urls: [ 'sources/audio/mp3/chest_of_drawers.mp3', 'sources/audio/ogg/chest_of_drawers.ogg' ]
         })
     }
 };
@@ -146,7 +181,7 @@ Game.museum = {
         Game.selected = Game.debris[name];
         Game.entities.information.text = Game.selected.text;
 
-        if (Game.selected.audio !== undefined) {
+        if (Game.selected.audio !== undefined && Game.selected.audio._activeNode() === null) {
             Game.selected.audio.play();
         }
     },
@@ -244,6 +279,10 @@ Game.museum = {
 }
 
 Game.intro = {
+    waves: new Howl({
+        urls: [ 'sources/audio/mp3/waves.mp3', 'sources/audio/ogg/waves.ogg' ],
+        loop: true
+    }),
     playing: true,
     timer: -5,
     start: false,
@@ -252,6 +291,10 @@ Game.intro = {
             // wait
 
         } else {
+            if (Game.intro.waves._activeNode() === null) {
+                Game.intro.waves.fadeIn(0.1, 3000);
+            }
+
             if (Game.intro.start === false) {
                 Game.intro.start = true;
 

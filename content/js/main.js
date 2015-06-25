@@ -1,6 +1,6 @@
 var WIDTH = 1024;
 var HEIGHT = 600;
-var RADIUS = 1200;
+var RADIUS = 1300;
 
 // produces an (x, y) on the screen, above the lighthouse
 function randomPosition () {
@@ -14,7 +14,7 @@ function onDown (e) {
     var target = e.target;
     var point = e.data.getLocalPosition(Game.stage.parent); // relative to the stage container
 
-    if (Game.selected) {
+    if (Game.selected && Game.selected !== Game.debris[target.name]) {
         Game.museum.deselect();
     }
 
@@ -27,7 +27,7 @@ function onDown (e) {
 
 (function () {
     var renderer = PIXI.autoDetectRenderer(WIDTH, HEIGHT, { antialias: true });
-    document.body.appendChild(renderer.view);
+    document.getElementById("container").appendChild(renderer.view);
 
     var parent = new PIXI.Container();
     var shadow_box = new PIXI.Container();
