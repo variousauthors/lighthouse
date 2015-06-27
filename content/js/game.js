@@ -2,6 +2,7 @@
 var Game = { };
 Game.selected = null;
 Game.entities = {};
+Game.sprites = {};
 Game.light = {
     rate: 14,
     timer: 0,
@@ -72,13 +73,16 @@ Game.title = {
 function Debris (name) {
     return {
         init: function () {
-            var sprite = PIXI.Sprite.fromImage('sources/images/' + name + '_small.png');
-            sprite.name = name;
+            Game.sprites[name] = PIXI.Sprite.fromImage('sources/images/' + name + '_small.png');
+            Game.briefcase.sprites[name] = PIXI.Sprite.fromImage('sources/images/' + name + '_small.png');
 
-            Game.entities[name] = sprite;
-            Game.collection.entities[name] = sprite;
+            Game.sprites[name].name = name;
+            Game.sprites[name].visible = true;
 
-            return sprite;
+            Game.briefcase.sprites[name].name = name;
+            Game.briefcase.sprites[name].visible = false;
+
+            return Game.sprites[name];
         },
         text: name + "TEXT",
         audio: new Howl({
@@ -98,42 +102,44 @@ Game.debris = {
 };
 
 Game.museum = {
-    select: function (name) {
-        if (Game.debris[name] === undefined) { return false; }
+    draw: function () {
+        // TODO this should move into an update function
+        Game.foreground.children.forEach(function (object, index) {
+            var debris = Game.debris[object.name];
+            var position, rnd;
 
-        Game.selected = Game.debris[name];
-        Game.entities.information.text = Game.selected.text;
+            if (debris !== undefined && Game.briefcase.sprites[object.name].visible === false) {
+                rnd = ((Math.random() * 10)|0) % (Game.foreground.children.length/2);
 
-        if (Game.selected.audio !== undefined && Game.selected.audio._activeNode() === null) {
-            Game.selected.audio.play();
-        }
-    },
-    deselect: function () {
-        if (Game.selected.audio !== undefined) {
-            Game.selected.audio.fadeOut(0.0, 3000, function () {
-                this.volume(1);
-                this.stop();
-            }.bind(Game.selected.audio));
-        }
+                if (Game.shuffle === true) {
+                    if (rnd == 0) {
+                        // shuffle the debris
+                        position = randomPosition();
 
-        Game.selected = null;
+                        debris.position.set(position[0], position[1]);
+                        object.position.set(position[0], position[1]);
+
+                        object.visible = true;
+                    } else {
+                        object.visible = false;
+                    }
+                } else {
+                    var reach = object.height/10;
+
+                    // the object bobs up and down gently
+                    // debris.position stores the objects coords sans bob
+                    var y = reach * Math.sin(Game.wave*2*Math.PI);
+                    var theta = 0.1*Math.sin(Game.wave*2*Math.PI);
+
+                    object.position.set(debris.position.x, debris.position.y + y);
+                    object.rotation = theta;
+                }
+            }
+        });
     },
     update: function (dt) {
         var debris = Game.debris[Game.selected];
-        var speed = 1000;
 
-        /*
-        if (Game.selected === null) {
-            if (Game.entities.dialogueBox.position.y <= (HEIGHT + 1)) {
-                // tween the menu into place
-                Game.entities.dialogueBox.position.y += speed*dt
-            }
-
-        } else if (Game.entities.dialogueBox.position.y > (HEIGHT - Game.entities.dialogueBox.height - 10)) {
-
-            // tween the menu into place
-            Game.entities.dialogueBox.position.y -= speed*dt
-        }*/
     },
     init: function () {
         var container = new PIXI.Container();
@@ -238,15 +244,56 @@ Game.intro = {
     }
 }
 
-Game.collection = {
-    entities: [],
-    init: function init () {
+Game.briefcase = {
+    sprites: {},
+    // put something into the briefcase
+    collect: function (name) {
+        if (Game.debris[name] === undefined) { return false; }
 
     },
-    add: function add (name, entity) {
+    // toss something into the sea
+    reject: function (name) {
+        if (Game.debris[name] === undefined) { return false; }
 
     },
-    remove: function remove () {
+    select: function () {
+        if (Game.debris[name] === undefined) { return false; }
+
+        Game.selected = Game.debris[name];
+        Game.entities.information.text = Game.selected.text;
+
+        if (Game.selected.audio !== undefined && Game.selected.audio._activeNode() === null) {
+            Game.selected.audio.play();
+        }
+    },
+    deselect: function () {
+        if (Game.selected.audio !== undefined) {
+            Game.selected.audio.fadeOut(0.0, 3000, function () {
+                this.volume(1);
+                this.stop();
+            }.bind(Game.selected.audio));
+        }
+
+        Game.selected = null;
+    },
+    update: function (dt) {
+        var debris = Game.debris[Game.selected];
+        var speed = 1000;
+
+        /*
+        if (Game.selected === null) {
+            if (Game.entities.dialogueBox.position.y <= (HEIGHT + 1)) {
+                // tween the menu into place
+                Game.entities.dialogueBox.position.y += speed*dt
+            }
+
+        } else if (Game.entities.dialogueBox.position.y > (HEIGHT - Game.entities.dialogueBox.height - 10)) {
+
+            // tween the menu into place
+            Game.entities.dialogueBox.position.y -= speed*dt
+        }*/
+    },
+    draw: function () {
 
     }
 }

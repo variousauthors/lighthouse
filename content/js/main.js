@@ -12,7 +12,12 @@ function randomPosition () {
 
 function onDown (e) {
     var target = e.target;
-    var point = e.data.getLocalPosition(Game.stage.parent); // relative to the stage container
+    var name = target.name;
+    var point;
+
+    if (name === undefined) { return false; }
+
+    point = e.data.getLocalPosition(Game.stage.parent); // relative to the stage container
 
     if (Game.selected && Game.selected !== Game.debris[target.name]) {
         Game.museum.deselect();
@@ -22,7 +27,17 @@ function onDown (e) {
         return false;
     }
 
-    Game.museum.select(target.name);
+    // toggle position between briefcase and the sea
+    if (Game.sprites[name].visible === true) {
+        Game.sprites[name].visible = false;
+        Game.briefcase.sprites[name].visible = true;
+    } else if (Game.briefcase.sprites[name].visible === true) {
+        Game.briefcase.sprites[name].visible = false;
+        Game.sprites[name].visible = true;
+    }
+
+    // TODO clicking on an ear in the briefcase will cause selection
+    // Game.museum.select(target.name);
 }
 
 (function () {
@@ -111,41 +126,11 @@ function onDown (e) {
             }
         }
 
-        // TODO this should move into an update function
-        Game.foreground.children.forEach(function (object, index) {
-            var debris = Game.debris[object.name];
-            var position;
-            var rnd = ((Math.random() * 10)|0) % (Game.foreground.children.length/2);
-
-            if (debris !== undefined) {
-                if (Game.shuffle === true) {
-                    if (rnd == 0) {
-                        // shuffle the debris
-                        position = randomPosition();
-
-                        debris.position.set(position[0], position[1]);
-                        object.position.set(position[0], position[1]);
-
-                        object.visible = true;
-                    } else {
-                        object.visible = false;
-                    }
-                } else {
-                    var reach = object.height/10;
-
-                    // the object bobs up and down gently
-                    // debris.position stores the objects coords sans bob
-                    var y = reach * Math.sin(Game.wave*2*Math.PI);
-                    var theta = 0.1*Math.sin(Game.wave*2*Math.PI);
-
-                    object.position.set(debris.position.x, debris.position.y + y);
-                    object.rotation = theta;
-                }
-            }
-        });
-
         Game.light.update(dt);
         Game.museum.update(dt);
+
+        Game.museum.draw();
+        Game.briefcase.draw();
 
         Game.wave = (Game.wave + dt/4) % 1;
         Game.timer = next;
