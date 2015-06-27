@@ -44,12 +44,14 @@ function onDown (e) {
     var renderer = PIXI.autoDetectRenderer(WIDTH, HEIGHT, { antialias: true });
     document.getElementById("container").appendChild(renderer.view);
 
-    var parent = new PIXI.Container();
-    var shadow_box = new PIXI.Container();
     // create the root of the scene graph
     var stage = new PIXI.Container();
-
+    var GUI = new PIXI.Container();
+    var parent = new PIXI.Container();
+    var shadow_box = new PIXI.Container();
+    var briefcase_contents = new PIXI.Container();
     var background = Game.background.init();
+
     stage.addChild(background);
     background.interactive = true;
     background.on("mousedown", onDown);
@@ -81,8 +83,10 @@ function onDown (e) {
         Game.debris[key].position = new PIXI.Point(debris.position.x, debris.position.y);
 
         foreground.addChild(debris);
+        briefcase_contents.addChild(Game.briefcase.sprites[key]);
     });
 
+    GUI.addChild(briefcase_contents);
     stage.addChild(foreground);
     Game.foreground = foreground;
 
@@ -100,6 +104,7 @@ function onDown (e) {
     parent.addChild(stage);
     parent.addChild(shadow_box);
     parent.addChild(museum);
+    parent.addChild(GUI);
 
     Game.parent = parent;
     Game.stage = stage;
@@ -128,9 +133,7 @@ function onDown (e) {
 
         Game.light.update(dt);
         Game.museum.update(dt);
-
-        Game.museum.draw();
-        Game.briefcase.draw();
+        Game.briefcase.update(dt);
 
         Game.wave = (Game.wave + dt/4) % 1;
         Game.timer = next;

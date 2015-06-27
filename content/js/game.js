@@ -102,9 +102,12 @@ Game.debris = {
 };
 
 Game.museum = {
-    draw: function () {
-        // TODO this should move into an update function
-        Game.foreground.children.forEach(function (object, index) {
+    update: function (dt) {
+        var debris = Game.debris[Game.selected];
+        var keys = Object.keys(Game.sprites);
+
+        for (i = 0; i < keys.length; i++) {
+            var object = Game.sprites[keys[i]];
             var debris = Game.debris[object.name];
             var position, rnd;
 
@@ -135,11 +138,7 @@ Game.museum = {
                     object.rotation = theta;
                 }
             }
-        });
-    },
-    update: function (dt) {
-        var debris = Game.debris[Game.selected];
-
+        }
     },
     init: function () {
         var container = new PIXI.Container();
@@ -279,6 +278,7 @@ Game.briefcase = {
     update: function (dt) {
         var debris = Game.debris[Game.selected];
         var speed = 1000;
+        var keys, i;
 
         /*
         if (Game.selected === null) {
@@ -292,8 +292,19 @@ Game.briefcase = {
             // tween the menu into place
             Game.entities.dialogueBox.position.y -= speed*dt
         }*/
-    },
-    draw: function () {
 
+        var keys = Object.keys(Game.briefcase.sprites);
+
+        for (i = 0; i < keys.length; i++) {
+            var object = Game.briefcase.sprites[keys[i]];
+            var debris = Game.debris[object.name];
+            var position, rnd;
+
+            if (debris !== undefined && Game.sprites[object.name].visible === false) {
+                if (object.visible) {
+                    object.position.set(0, 0);
+                }
+            }
+        }
     }
 }
