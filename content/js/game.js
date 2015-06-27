@@ -69,112 +69,32 @@ Game.title = {
     }
 }
 
-Game.debris = {
-    hat: {
+function Debris (name) {
+    return {
         init: function () {
-            var sprite = PIXI.Sprite.fromImage('sources/images/hat_small.png');
-            sprite.name = "hat";
+            var sprite = PIXI.Sprite.fromImage('sources/images/' + name + '_small.png');
+            sprite.name = name;
 
-            Game.entities.hat = sprite;
+            Game.entities[name] = sprite;
+            Game.collection.entities[name] = sprite;
 
             return sprite;
         },
-        text: "HAT TEXT",
+        text: name + "TEXT",
         audio: new Howl({
             volume: 0.7,
-            urls: [ 'sources/audio/mp3/hat.mp3', 'sources/audio/ogg/hat.ogg' ]
-        })
-    },
-    apple: {
-        init: function () {
-            var sprite = PIXI.Sprite.fromImage('sources/images/apple_small.png');
-            sprite.name = "apple";
-
-            Game.entities.apple = sprite;
-
-            return sprite;
-        },
-        text: "APPLE TEXT",
-        audio: new Howl({
-            volume: 0.7,
-            urls: [ 'sources/audio/mp3/apple.mp3', 'sources/audio/ogg/apple.ogg' ]
-        })
-    },
-    whale: {
-        init: function () {
-            var sprite = PIXI.Sprite.fromImage('sources/images/whale_small.png');
-            sprite.name = "whale";
-
-            Game.entities.whale = sprite;
-
-            return sprite;
-        },
-        text: "WHALE TEXT",
-        audio: new Howl({
-            volume: 0.7,
-            urls: [ 'sources/audio/mp3/whale.mp3', 'sources/audio/ogg/whale.ogg' ]
-        })
-    },
-    goldfish: {
-        init: function () {
-            var sprite = PIXI.Sprite.fromImage('sources/images/goldfish_small.png');
-            sprite.name = "goldfish";
-
-            Game.entities.goldfish = sprite;
-
-            return sprite;
-        },
-        text: "goldfish TEXT",
-        audio: new Howl({
-            volume: 0.7,
-            urls: [ 'sources/audio/mp3/goldfish.mp3', 'sources/audio/ogg/goldfish.ogg' ]
-        })
-    },
-    goldfish: {
-        init: function () {
-            var sprite = PIXI.Sprite.fromImage('sources/images/goldfish_small.png');
-            sprite.name = "goldfish";
-
-            Game.entities.goldfish = sprite;
-
-            return sprite;
-        },
-        text: "goldfish TEXT",
-        audio: new Howl({
-            volume: 0.7,
-            urls: [ 'sources/audio/mp3/goldfish.mp3', 'sources/audio/ogg/goldfish.ogg' ]
-        })
-    },
-    book: {
-        init: function () {
-            var sprite = PIXI.Sprite.fromImage('sources/images/book_small.png');
-            sprite.name = "book";
-
-            Game.entities.book = sprite;
-
-            return sprite;
-        },
-        text: "Book TEXT",
-        audio: new Howl({
-            volume: 0.7,
-            urls: [ 'sources/audio/mp3/book.mp3', 'sources/audio/ogg/book.ogg' ]
-        })
-    },
-    chest_of_drawers: {
-        init: function () {
-            var sprite = PIXI.Sprite.fromImage('sources/images/chest_small.png');
-            sprite.name = "chest_of_drawers";
-
-            Game.entities.chest_of_drawers = sprite;
-
-            return sprite;
-        },
-        text: "chest_of_drawers TEXT",
-        audio: new Howl({
-            volume: 0.7,
-            urls: [ 'sources/audio/mp3/chest_of_drawers.mp3', 'sources/audio/ogg/chest_of_drawers.ogg' ]
+            urls: [ 'sources/audio/mp3/' + name + '.mp3', 'sources/audio/ogg/' + name + '.ogg' ]
         })
     }
+}
+
+Game.debris = {
+    hat: new Debris("hat"),
+    apple: new Debris("apple"),
+    whale: new Debris("whale"),
+    goldfish: new Debris("goldfish"),
+    book: new Debris("book"),
+    chest_of_drawers: new Debris("chest_of_drawers")
 };
 
 Game.museum = {
@@ -315,5 +235,18 @@ Game.intro = {
         }
 
         Game.intro.timer += dt;
+    }
+}
+
+Game.collection = {
+    entities: [],
+    init: function init () {
+
+    },
+    add: function add (name, entity) {
+
+    },
+    remove: function remove () {
+
     }
 }
