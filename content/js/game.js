@@ -60,7 +60,10 @@ Game.lighthouse = {
 
 Game.title = {
     init: function () {
-        var title = new PIXI.Sprite.fromImage('sources/images/title.png');
+        var title = new PIXI.Sprite.fromImage('sources/images/conch_small.png');
+
+        title.x = 150;
+        Game.entities.title = title;
 
         return title;
     }
@@ -78,7 +81,7 @@ Game.debris = {
         },
         text: "HAT TEXT",
         audio: new Howl({
-            volume: 0.5,
+            volume: 0.7,
             urls: [ 'sources/audio/mp3/hat.mp3', 'sources/audio/ogg/hat.ogg' ]
         })
     },
@@ -93,7 +96,7 @@ Game.debris = {
         },
         text: "APPLE TEXT",
         audio: new Howl({
-            volume: 0.5,
+            volume: 0.7,
             urls: [ 'sources/audio/mp3/apple.mp3', 'sources/audio/ogg/apple.ogg' ]
         })
     },
@@ -108,7 +111,7 @@ Game.debris = {
         },
         text: "WHALE TEXT",
         audio: new Howl({
-            volume: 0.5,
+            volume: 0.7,
             urls: [ 'sources/audio/mp3/whale.mp3', 'sources/audio/ogg/whale.ogg' ]
         })
     },
@@ -123,7 +126,7 @@ Game.debris = {
         },
         text: "goldfish TEXT",
         audio: new Howl({
-            volume: 0.5,
+            volume: 0.7,
             urls: [ 'sources/audio/mp3/goldfish.mp3', 'sources/audio/ogg/goldfish.ogg' ]
         })
     },
@@ -138,7 +141,7 @@ Game.debris = {
         },
         text: "goldfish TEXT",
         audio: new Howl({
-            volume: 0.5,
+            volume: 0.7,
             urls: [ 'sources/audio/mp3/goldfish.mp3', 'sources/audio/ogg/goldfish.ogg' ]
         })
     },
@@ -153,7 +156,7 @@ Game.debris = {
         },
         text: "Book TEXT",
         audio: new Howl({
-            volume: 0.5,
+            volume: 0.7,
             urls: [ 'sources/audio/mp3/book.mp3', 'sources/audio/ogg/book.ogg' ]
         })
     },
@@ -168,7 +171,7 @@ Game.debris = {
         },
         text: "chest_of_drawers TEXT",
         audio: new Howl({
-            volume: 0.5,
+            volume: 0.7,
             urls: [ 'sources/audio/mp3/chest_of_drawers.mp3', 'sources/audio/ogg/chest_of_drawers.ogg' ]
         })
     }
@@ -199,6 +202,7 @@ Game.museum = {
         var debris = Game.debris[Game.selected];
         var speed = 1000;
 
+        /*
         if (Game.selected === null) {
             if (Game.entities.dialogueBox.position.y <= (HEIGHT + 1)) {
                 // tween the menu into place
@@ -209,7 +213,7 @@ Game.museum = {
 
             // tween the menu into place
             Game.entities.dialogueBox.position.y -= speed*dt
-        }
+        }*/
     },
     init: function () {
         var container = new PIXI.Container();
@@ -300,6 +304,8 @@ Game.intro = {
 
                 // reset the light timer so that it makes a second pass right away
                 Game.light.timer = 0;
+
+                Game.entities.title.visible = false;
             }
 
             if (Game.stage.position.y > -600) {
