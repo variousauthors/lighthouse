@@ -23,21 +23,24 @@ function onDown (e) {
         Game.museum.deselect();
     }
 
-    if (! Game.entities.light.containsPoint(point)) {
-        return false;
-    }
-
-    // toggle position between briefcase and the sea
-    if (Game.sprites[name].visible === true) {
-        Game.sprites[name].visible = false;
-        Game.briefcase.sprites[name].visible = true;
-    } else if (Game.briefcase.sprites[name].visible === true) {
-        Game.briefcase.sprites[name].visible = false;
-        Game.sprites[name].visible = true;
+    if (Game.entities.light.containsPoint(point)) {
+        // toggle position between briefcase and the sea
+        if (Game.sprites[name].visible === true) {
+            Game.briefcase.collect(name);
+        }
+    } else if (Game.briefcase.sprites[name].visible === true) { // if the object is in the briefcase
+        // a click on the ear plays the sample
+        // else if (Game.briefcase.sprites[name].visible === true) {
+        Game.briefcase.reject(name);
     }
 
     // TODO clicking on an ear in the briefcase will cause selection
     // Game.museum.select(target.name);
+}
+
+function onUp (e) {
+    // end a drag
+
 }
 
 (function () {
@@ -72,6 +75,9 @@ function onDown (e) {
 
         debris.interactive = true;
         debris.on('mousedown', onDown);
+
+        Game.briefcase.sprites[key].interactive = true;
+        Game.briefcase.sprites[key].on('mousedown', onDown);
 
         position = randomPosition();
 

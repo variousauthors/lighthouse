@@ -244,16 +244,24 @@ Game.intro = {
 }
 
 Game.briefcase = {
+    weight: 0,
+    capacity: 2,
     sprites: {},
     // put something into the briefcase
     collect: function (name) {
         if (Game.debris[name] === undefined) { return false; }
 
+        Game.sprites[name].visible = false;
+        Game.briefcase.sprites[name].visible = true;
+        Game.briefcase.weight += 1;
     },
     // toss something into the sea
     reject: function (name) {
         if (Game.debris[name] === undefined) { return false; }
 
+        Game.briefcase.sprites[name].visible = false;
+        Game.sprites[name].visible = true;
+        Game.briefcase.weight -= 1;
     },
     select: function () {
         if (Game.debris[name] === undefined) { return false; }
