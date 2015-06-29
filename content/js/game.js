@@ -71,24 +71,47 @@ Game.title = {
 }
 
 function Debris (name) {
-    return {
-        init: function () {
-            Game.sprites[name] = PIXI.Sprite.fromImage('sources/images/' + name + '_small.png');
-            Game.briefcase.sprites[name] = PIXI.Sprite.fromImage('sources/images/' + name + '_small.png');
+    this.name = name;
+    this.text = this.name + "TEXT";
+    this.audio = null;
+}
 
-            Game.sprites[name].name = name;
-            Game.sprites[name].visible = true;
+Debris.prototype = {
+    onDown: function onDown (e) {
+        var target = e.target;
+        var name = target.name;
+        var point;
 
-            Game.briefcase.sprites[name].name = name;
-            Game.briefcase.sprites[name].visible = false;
+        if (name === undefined) { return false; }
 
-            return Game.sprites[name];
-        },
-        text: name + "TEXT",
-        audio: new Howl({
+        point = e.data.getLocalPosition(Game.stage.parent); // relative to the stage container
+
+        if (Game.entities.light.containsPoint(point)) {
+            // toggle position between briefcase and the sea
+            if (Game.sprites[name].visible === true) {
+                Game.briefcase.collect(name);
+            }
+        }
+
+        // TODO clicking on an ear in the briefcase will cause selection
+        // Game.museum.select(target.name);
+    },
+    init: function () {
+        Game.sprites[this.name] = PIXI.Sprite.fromImage('sources/images/' + this.name + '_small.png');
+        Game.briefcase.sprites[this.name] = PIXI.Sprite.fromImage('sources/images/' + this.name + '_small.png');
+
+        Game.sprites[this.name].name = this.name;
+        Game.sprites[this.name].visible = true;
+
+        Game.briefcase.sprites[this.name].name = this.name;
+        Game.briefcase.sprites[this.name].visible = false;
+
+        this.audio = new Howl({
             volume: 0.7,
-            urls: [ 'sources/audio/mp3/' + name + '.mp3', 'sources/audio/ogg/' + name + '.ogg' ]
-        })
+            urls: [ 'sources/audio/mp3/' + this.name + '.mp3', 'sources/audio/ogg/' + this.name + '.ogg' ]
+        });
+
+        return Game.sprites[this.name];
     }
 }
 
@@ -98,7 +121,8 @@ Game.debris = {
     whale: new Debris("whale"),
     goldfish: new Debris("goldfish"),
     book: new Debris("book"),
-    chest_of_drawers: new Debris("chest_of_drawers")
+    chest_of_drawers: new Debris("chest_of_drawers"),
+
 };
 
 Game.museum = {
@@ -251,17 +275,22 @@ Game.briefcase = {
     collect: function (name) {
         if (Game.debris[name] === undefined) { return false; }
 
-        Game.sprites[name].visible = false;
-        Game.briefcase.sprites[name].visible = true;
-        Game.briefcase.weight += 1;
+        if (Game.briefcase.weight < Game.briefcase.capacity) {
+            Game.sprites[name].visible = false;
+            Game.briefcase.sprites[name].visible = true;
+            Game.briefcase.weight += 1;
+        } else {
+            // too full!
+        }
     },
     // toss something into the sea
     reject: function (name) {
         if (Game.debris[name] === undefined) { return false; }
 
-        Game.briefcase.sprites[name].visible = false;
-        Game.sprites[name].visible = true;
-        Game.briefcase.weight -= 1;
+        if (Game.briefcase.weight > 0) {
+            Game.briefcase.sprites[name].visible = false;
+            Game.briefcase.weight -= 1;
+        }
     },
     select: function () {
         if (Game.debris[name] === undefined) { return false; }
@@ -312,10 +341,31 @@ Game.briefcase = {
             if (debris !== undefined && Game.sprites[object.name].visible === false) {
                 if (object.visible) {
                     // add the object to the briefcase display
+                    object.width = 50;
+                    object.height = 50;
                     object.position.set(20 + offset_x, HEIGHT - (object.height + 20));
-                    offset_x += object.width;
+                    offset_x += object.width + 10;
                 }
             }
         }
+    },
+    onDown: function onDownBriefcase (e) {
+        var target = e.target;
+        var name = target.name;
+        var point;
+
+        if (name === undefined) { return false; }
+
+        point = e.data.getLocalPosition(Game.stage.parent); // relative to the stage container
+
+        if (Game.briefcase.sprites[name].visible === true) { // if the object is in the briefcase
+            // a click on the ear plays the sample
+            Game.briefcase.reject(name);
+        }
+
+        // TODO clicking on an ear in the briefcase will cause selection
+        // Game.museum.select(target.name);
+
     }
+
 }

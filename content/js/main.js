@@ -10,34 +10,6 @@ function randomPosition () {
     return [x, y];
 }
 
-function onDown (e) {
-    var target = e.target;
-    var name = target.name;
-    var point;
-
-    if (name === undefined) { return false; }
-
-    point = e.data.getLocalPosition(Game.stage.parent); // relative to the stage container
-
-    if (Game.selected && Game.selected !== Game.debris[target.name]) {
-        Game.museum.deselect();
-    }
-
-    if (Game.entities.light.containsPoint(point)) {
-        // toggle position between briefcase and the sea
-        if (Game.sprites[name].visible === true) {
-            Game.briefcase.collect(name);
-        }
-    } else if (Game.briefcase.sprites[name].visible === true) { // if the object is in the briefcase
-        // a click on the ear plays the sample
-        // else if (Game.briefcase.sprites[name].visible === true) {
-        Game.briefcase.reject(name);
-    }
-
-    // TODO clicking on an ear in the briefcase will cause selection
-    // Game.museum.select(target.name);
-}
-
 function onUp (e) {
     // end a drag
 
@@ -56,8 +28,6 @@ function onUp (e) {
     var background = Game.background.init();
 
     stage.addChild(background);
-    background.interactive = true;
-    background.on("mousedown", onDown);
 
     var title = Game.title.init();
     stage.addChild(title);
@@ -74,10 +44,10 @@ function onUp (e) {
         var position;
 
         debris.interactive = true;
-        debris.on('mousedown', onDown);
+        debris.on('mousedown', Debris.prototype.onDown);
 
         Game.briefcase.sprites[key].interactive = true;
-        Game.briefcase.sprites[key].on('mousedown', onDown);
+        Game.briefcase.sprites[key].on('mousedown', Game.briefcase.onDown);
 
         position = randomPosition();
 

@@ -16,6 +16,7 @@ NEXTSTEPS
 [ ] the text for each object is displayed in conch hidden
     off-screen
 [ ] gradually, as the game progresses, the conch cross-fades with an ear
+[ ] debris should appear wholely inside the frame
 
 MAYBE
  - maybe add some layers to things so that they have more
