@@ -3,6 +3,7 @@ NEXTSTEPS
 
  - the mouse should be a fishhook!
  - when we click objects they enter the briefcase
+ - objects in the briefcase are black and white icon sized versions
  - in the briefcase, every object has an ear
  - in the briefcase, the mouse is a conch
  - click to open and close the briefcase

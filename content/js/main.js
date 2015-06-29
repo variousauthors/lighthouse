@@ -95,7 +95,7 @@ function onDown (e) {
     var lighthouse_light = Game.lighthouse.init();
     lighthouse_light.alpha = 1;
 
-    stage.mask = light;
+//    stage.mask = light;
 
     stage.addChild(lighthouse_light);
 

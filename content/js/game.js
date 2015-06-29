@@ -294,6 +294,7 @@ Game.briefcase = {
         }*/
 
         var keys = Object.keys(Game.briefcase.sprites);
+        var offset_x = 0;
 
         for (i = 0; i < keys.length; i++) {
             var object = Game.briefcase.sprites[keys[i]];
@@ -302,7 +303,9 @@ Game.briefcase = {
 
             if (debris !== undefined && Game.sprites[object.name].visible === false) {
                 if (object.visible) {
-                    object.position.set(0, 0);
+                    // add the object to the briefcase display
+                    object.position.set(20 + offset_x, HEIGHT - (object.height + 20));
+                    offset_x += object.width;
                 }
             }
         }
