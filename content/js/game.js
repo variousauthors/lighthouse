@@ -96,13 +96,22 @@ Debris.prototype = {
         // TODO clicking on an ear in the briefcase will cause selection
         // Game.museum.select(target.name);
     },
+    onEarDown: function onEarDown (e) {
+        e.stopPropagation();
+        Game.briefcase.select(this.parent.name);
+    },
     init: function () {
+        var ear = new PIXI.Sprite.fromImage('sources/images/ear_tiny.png');
+        ear.interactive = true;
+        ear.on('mousedown', Debris.prototype.onEarDown);
+
         Game.sprites[this.name] = PIXI.Sprite.fromImage('sources/images/' + this.name + '_small.png');
         Game.briefcase.sprites[this.name] = PIXI.Sprite.fromImage('sources/images/' + this.name + '_small.png');
 
         Game.sprites[this.name].name = this.name;
         Game.sprites[this.name].visible = true;
 
+        Game.briefcase.sprites[this.name].addChild(ear);
         Game.briefcase.sprites[this.name].name = this.name;
         Game.briefcase.sprites[this.name].visible = false;
 
@@ -292,7 +301,7 @@ Game.briefcase = {
             Game.briefcase.weight -= 1;
         }
     },
-    select: function () {
+    select: function (name) {
         if (Game.debris[name] === undefined) { return false; }
 
         Game.selected = Game.debris[name];
@@ -341,10 +350,11 @@ Game.briefcase = {
             if (debris !== undefined && Game.sprites[object.name].visible === false) {
                 if (object.visible) {
                     // add the object to the briefcase display
-                    object.width = 50;
-                    object.height = 50;
+                    object.width = 100;
+                    object.height = 100;
                     object.position.set(20 + offset_x, HEIGHT - (object.height + 20));
                     offset_x += object.width + 10;
+
                 }
             }
         }
