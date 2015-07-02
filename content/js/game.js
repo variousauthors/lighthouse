@@ -39,15 +39,15 @@ Game.light = {
 }
 Game.background = {
     init: function () {
-        var lighthouse = new PIXI.Sprite.fromImage('sources/images/ocean.png');
+        var ocean = new PIXI.Sprite.fromImage('sources/images/ocean.png');
         // set a fill and a line style again and draw a rectangle
 
-        Game.entities.background = lighthouse;
-        lighthouse.interactive = true;
-        lighthouse.buttonMode = true;
-        lighthouse.defaultCursor = "url(/sources/images/fishhook_tiny.png) 4 12, none";
+        Game.entities.background = ocean;
+        ocean.interactive = true;
+        ocean.buttonMode = true;
+        ocean.defaultCursor = "url(/sources/images/fishhook_tiny.png) 4 30, none";
 
-        return lighthouse;
+        return ocean;
     }
 }
 Game.lighthouse = {
@@ -106,6 +106,8 @@ Debris.prototype = {
     init: function () {
         var ear = new PIXI.Sprite.fromImage('sources/images/ear_tiny.png');
         ear.interactive = true;
+        ear.buttonMode = true;
+        ear.defaultCursor = "url(/sources/images/conch_tiny.png) 30 20, none";
         ear.on('mousedown', Debris.prototype.onEarDown);
 
         Game.sprites[this.name] = PIXI.Sprite.fromImage('sources/images/' + this.name + '_small.png');
@@ -115,11 +117,16 @@ Debris.prototype = {
         Game.sprites[this.name].visible = true;
         Game.sprites[this.name].interactive = true;
         Game.sprites[this.name].buttonMode = true;
-        Game.sprites[this.name].defaultCursor = "url(/sources/images/fishhook_tiny.png) 4 12, none";
+        Game.sprites[this.name].defaultCursor = "url(/sources/images/fishhook_tiny.png) 4 30, none";
 
         Game.briefcase.sprites[this.name].addChild(ear);
         Game.briefcase.sprites[this.name].name = this.name;
         Game.briefcase.sprites[this.name].visible = false;
+        Game.briefcase.sprites[this.name].interactive = true;
+        // TODO for now button mode is false, see https://github.com/GoodBoyDigital/pixi.js/issues/1920
+        // we are not able to have nested cursor styles
+        Game.briefcase.sprites[this.name].buttonMode = false;
+        Game.briefcase.sprites[this.name].defaultCursor = "grab";
 
         this.audio = new Howl({
             volume: 0.7,

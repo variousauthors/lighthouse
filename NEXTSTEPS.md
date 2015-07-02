@@ -1,7 +1,7 @@
 NEXTSTEPS
 =========
 
-[ ] the mouse should be a fishhook!
+[x] the mouse should be a fishhook!
 [ ] in the briefcase, the mouse is a conch
 
 [x] when we click objects they enter the briefcase
