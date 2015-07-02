@@ -82,6 +82,28 @@ function Debris (name, ear_x, ear_y) {
 }
 
 Debris.prototype = {
+    onUp: function onUp (e) {
+        var target = e.target;
+        var name = target.name;
+        var point, debris;
+
+        if (name === undefined) { return false; }
+
+        point = e.data.getLocalPosition(Game.stage.parent); // relative to the stage container
+
+        if (Game.sprites[name].held === true) {
+
+            debris = Game.sprites[name];
+
+            Game.briefcase.collect(name);
+
+            Game.stage.parent.removeChild(debris);
+            Game.stage.addChild(debris);
+            debris.held = false;
+            debris.visible = false;
+        }
+
+    },
     onDown: function onDown (e) {
         var target = e.target;
         var name = target.name;
@@ -118,6 +140,7 @@ Debris.prototype = {
         Game.briefcase.sprites[this.name] = PIXI.Sprite.fromImage('sources/images/' + this.name + '_tiny.png');
 
         Game.sprites[this.name].name = this.name;
+        Game.sprites[this.name].held = false;
         Game.sprites[this.name].visible = true;
         Game.sprites[this.name].interactive = true;
         Game.sprites[this.name].buttonMode = true;
@@ -161,7 +184,7 @@ Game.museum = {
             var debris = Game.debris[object.name];
             var position, rnd;
 
-            if (debris !== undefined && Game.briefcase.sprites[object.name].visible === false) {
+            if (debris !== undefined && Game.briefcase.sprites[object.name].visible === false && object.held === false) {
                 rnd = ((Math.random() * 10)|0) % (Game.foreground.children.length/2);
 
                 if (Game.shuffle === true) {
@@ -266,6 +289,8 @@ Game.intro = {
     timer: -5,
     start: false,
     update: function (dt) {
+        var briefcase;
+
         if (Game.intro.timer < 0) {
             // wait
 
@@ -287,6 +312,14 @@ Game.intro = {
                 Game.stage.position.set(Game.stage.position.x, Game.stage.position.y - 100*dt);
                 Game.shadow_box.position.set(Game.shadow_box.position.x, Game.shadow_box.position.y - 100*dt);
             }
+
+            briefcase = Game.entities.briefcase;
+            if (briefcase.position.y > (HEIGHT - 240)) {
+                briefcase.position.set(briefcase.position.x, briefcase.position.y - 110*dt);
+            }
+            if (briefcase.position.x < -60) {
+                briefcase.position.set(briefcase.position.x + 100*dt, briefcase.position.y);
+            }
         }
 
         Game.intro.timer += dt;
@@ -297,6 +330,16 @@ Game.briefcase = {
     weight: 0,
     capacity: 2,
     sprites: {},
+    init: function () {
+        var briefcase = new PIXI.Sprite.fromImage('sources/images/briefcase_small.png');
+        // set a fill and a line style again and draw a rectangle
+        briefcase.y = 2*HEIGHT - 240;
+        briefcase.x = -500;
+
+        Game.entities.briefcase = briefcase;
+
+        return briefcase;
+    },
     // put something into the briefcase
     collect: function (name) {
         if (Game.debris[name] === undefined) { return false; }
@@ -377,20 +420,30 @@ Game.briefcase = {
     onDown: function onDownBriefcase (e) {
         var target = e.target;
         var name = target.name;
-        var point;
+        var point, debris;
 
         if (name === undefined) { return false; }
 
         point = e.data.getLocalPosition(Game.stage.parent); // relative to the stage container
 
         if (Game.briefcase.sprites[name].visible === true) { // if the object is in the briefcase
-            // a click on the ear plays the sample
             Game.briefcase.reject(name);
+
+            debris = Game.sprites[name];
+
+            Game.stage.removeChild(debris);
+            Game.stage.parent.addChild(debris);
+
+            debris.position.set(point.x, point.y);
+            debris.visible = true;
+            debris.held = true;
+
         }
 
         // TODO clicking on an ear in the briefcase will cause selection
         // Game.museum.select(target.name);
 
     }
+
 
 }

@@ -9,6 +9,8 @@ NEXTSTEPS
 [x] in the briefcase, every object has an ear
 [x] clicking on the ear plays the audio
 [x] the ear is small and appears on the object
+[ ] briefcase objects should not shuffle about: they should
+    stay in the position they were added as
 
 [ ] click to open and close the briefcase
 

@@ -26,6 +26,7 @@ function onUp (e) {
     var shadow_box = new PIXI.Container();
     var briefcase_contents = new PIXI.Container();
     var background = Game.background.init();
+    var briefcase = Game.briefcase.init();
 
     stage.addChild(background);
 
@@ -38,6 +39,8 @@ function onUp (e) {
 
     var foreground = new PIXI.Container();
 
+    briefcase_contents.addChild(briefcase);
+
     // initialize the debris
     Object.keys(Game.debris).forEach(function (key, index) {
         var debris = Game.debris[key].init();
@@ -45,6 +48,7 @@ function onUp (e) {
 
         debris.interactive = true;
         debris.on('mousedown', Debris.prototype.onDown);
+        debris.on('mouseup', Debris.prototype.onUp);
 
         Game.briefcase.sprites[key].interactive = true;
         Game.briefcase.sprites[key].on('mousedown', Game.briefcase.onDown);
