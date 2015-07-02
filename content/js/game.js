@@ -43,6 +43,9 @@ Game.background = {
         // set a fill and a line style again and draw a rectangle
 
         Game.entities.background = lighthouse;
+        lighthouse.interactive = true;
+        lighthouse.buttonMode = true;
+        lighthouse.defaultCursor = "url(/sources/images/fishhook_tiny.png) 4 12, none";
 
         return lighthouse;
     }
@@ -110,6 +113,9 @@ Debris.prototype = {
 
         Game.sprites[this.name].name = this.name;
         Game.sprites[this.name].visible = true;
+        Game.sprites[this.name].interactive = true;
+        Game.sprites[this.name].buttonMode = true;
+        Game.sprites[this.name].defaultCursor = "url(/sources/images/fishhook_tiny.png) 4 12, none";
 
         Game.briefcase.sprites[this.name].addChild(ear);
         Game.briefcase.sprites[this.name].name = this.name;
