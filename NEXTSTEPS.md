@@ -1,6 +1,12 @@
 NEXTSTEPS
 =========
 
+[ ] shrink images with tinypng
+[ ] make sounds load lazily
+[ ] ensure sounds can't play over eachother (maybe
+    use the "no good" cursor instead of the conch
+    during audio)
+
 [x] the mouse should be a fishhook!
 [x] over the ear, the mouse is a conch
 
@@ -15,16 +21,16 @@ NEXTSTEPS
 [ ] click to open and close the briefcase
 
 [ ] dragging the objects sends them back into the sea
+[ ] when an object does not get added, we play a clip
 [x] when the briefcase is full, clicking on objects
     does not add them to the briefcase
-[ ] when an object does not get added, we play a clip
 
 [x] the title screen should be a conch, maybe flickering infront of an ear
 [ ] the text for each object is displayed in conch hidden
     off-screen
 [ ] gradually, as the game progresses, the conch cross-fades with an ear
 
-[ ] debris should appear wholely inside the frame
+[ ] debris should appear wholly inside the frame
 
 MAYBE
  - maybe add some layers to things so that they have more
