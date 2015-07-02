@@ -2,13 +2,13 @@ NEXTSTEPS
 =========
 
 [x] the mouse should be a fishhook!
-[ ] in the briefcase, the mouse is a conch
+[x] over the ear, the mouse is a conch
 
 [x] when we click objects they enter the briefcase
 [ ] objects in the briefcase are black and white icon sized versions
 [x] in the briefcase, every object has an ear
 [x] clicking on the ear plays the audio
-[ ] the ear is small and appears on the object
+[x] the ear is small and appears on the object
 
 [ ] click to open and close the briefcase
 

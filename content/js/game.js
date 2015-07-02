@@ -73,10 +73,12 @@ Game.title = {
     }
 }
 
-function Debris (name) {
+function Debris (name, ear_x, ear_y) {
     this.name = name;
     this.text = this.name + "TEXT";
     this.audio = null;
+    this.ear_x = ear_x;
+    this.ear_y = ear_y;
 }
 
 Debris.prototype = {
@@ -107,11 +109,13 @@ Debris.prototype = {
         var ear = new PIXI.Sprite.fromImage('sources/images/ear_tiny.png');
         ear.interactive = true;
         ear.buttonMode = true;
+        ear.x = this.ear_x;
+        ear.y = this.ear_y;
         ear.defaultCursor = "url(/sources/images/conch_tiny.png) 30 20, none";
         ear.on('mousedown', Debris.prototype.onEarDown);
 
         Game.sprites[this.name] = PIXI.Sprite.fromImage('sources/images/' + this.name + '_small.png');
-        Game.briefcase.sprites[this.name] = PIXI.Sprite.fromImage('sources/images/' + this.name + '_small.png');
+        Game.briefcase.sprites[this.name] = PIXI.Sprite.fromImage('sources/images/' + this.name + '_tiny.png');
 
         Game.sprites[this.name].name = this.name;
         Game.sprites[this.name].visible = true;
@@ -138,12 +142,12 @@ Debris.prototype = {
 }
 
 Game.debris = {
-    hat: new Debris("hat"),
-    apple: new Debris("apple"),
-    whale: new Debris("whale"),
-    goldfish: new Debris("goldfish"),
-    book: new Debris("book"),
-    chest_of_drawers: new Debris("chest_of_drawers"),
+    hat: new Debris("hat", 50, 20),
+    apple: new Debris("apple", 67, 20),
+    whale: new Debris("whale", 58, 10),
+    goldfish: new Debris("goldfish", 30, 10),
+    book: new Debris("book", 22, 29),
+    chest_of_drawers: new Debris("chest_of_drawers", 70, 13),
 
 };
 
@@ -363,8 +367,6 @@ Game.briefcase = {
             if (debris !== undefined && Game.sprites[object.name].visible === false) {
                 if (object.visible) {
                     // add the object to the briefcase display
-                    object.width = 100;
-                    object.height = 100;
                     object.position.set(20 + offset_x, HEIGHT - (object.height + 20));
                     offset_x += object.width + 10;
 
