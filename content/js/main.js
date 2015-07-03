@@ -49,6 +49,7 @@ function onUp (e) {
         debris.interactive = true;
         debris.on('mousedown', Debris.prototype.onDown);
         debris.on('mouseup', Debris.prototype.onUp);
+        debris.on('mousemove', Debris.prototype.onMove);
 
         Game.briefcase.sprites[key].interactive = true;
         Game.briefcase.sprites[key].on('mousedown', Game.briefcase.onDown);

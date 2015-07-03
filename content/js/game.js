@@ -1,5 +1,9 @@
 
 var Game = { };
+Game.splash = new Howl({
+    volume: 0.7,
+    urls: [ 'sources/audio/mp3/splash.mp3', 'sources/audio/ogg/splash.ogg' ]
+});
 Game.selected = null;
 Game.entities = {};
 Game.sprites = {};
@@ -82,6 +86,19 @@ function Debris (name, ear_x, ear_y) {
 }
 
 Debris.prototype = {
+    onMove: function onMove (e) {
+        var target = e.target;
+        var name = target.name;
+        var point, debris;
+
+        if (name === undefined) { return false; }
+
+        if (Game.sprites[name].held === true) {
+            debris = Game.sprites[name];
+            point = e.data.getLocalPosition(Game.stage.parent); // relative to the stage container
+            debris.position.set(point.x, point.y);
+        }
+    },
     onUp: function onUp (e) {
         var target = e.target;
         var name = target.name;
@@ -92,10 +109,17 @@ Debris.prototype = {
         point = e.data.getLocalPosition(Game.stage.parent); // relative to the stage container
 
         if (Game.sprites[name].held === true) {
-
             debris = Game.sprites[name];
 
-            Game.briefcase.collect(name);
+            if (Game.entities.briefcase.containsPoint(point)) {
+                Game.briefcase.collect(name);
+            } else {
+                Game.splash.play();
+                Game.selected.audio.fadeOut(0.0, 3000, function () {
+                    this.volume(1);
+                    this.stop();
+                }.bind(Game.selected.audio));
+            }
 
             Game.stage.parent.removeChild(debris);
             Game.stage.addChild(debris);
