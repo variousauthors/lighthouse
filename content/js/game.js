@@ -115,10 +115,13 @@ Debris.prototype = {
                 Game.briefcase.collect(name);
             } else {
                 Game.splash.play();
-                Game.selected.audio.fadeOut(0.0, 3000, function () {
-                    this.volume(1);
-                    this.stop();
-                }.bind(Game.selected.audio));
+
+                if (Game.selected) {
+                    Game.selected.audio.fadeOut(0.0, 3000, function () {
+                        this.volume(1);
+                        this.stop();
+                    }.bind(Game.selected.audio));
+                }
             }
 
             Game.stage.parent.removeChild(debris);
@@ -207,6 +210,9 @@ Game.museum = {
             var object = Game.sprites[keys[i]];
             var debris = Game.debris[object.name];
             var position, rnd;
+
+            // the object's cursor should always be the same as the background's
+            object.defaultCursor = Game.entities.background.defaultCursor;
 
             if (debris !== undefined && Game.briefcase.sprites[object.name].visible === false && object.held === false) {
                 rnd = ((Math.random() * 10)|0) % (Game.foreground.children.length/2);
@@ -375,6 +381,10 @@ Game.briefcase = {
         } else {
             // too full!
         }
+
+        if (Game.briefcase.weight === Game.briefcase.capacity) {
+            Game.entities.background.defaultCursor = "url(/sources/images/conch_tiny.png) 30 20, none";
+        }
     },
     // toss something into the sea
     reject: function (name) {
@@ -383,6 +393,7 @@ Game.briefcase = {
         if (Game.briefcase.weight > 0) {
             Game.briefcase.sprites[name].visible = false;
             Game.briefcase.weight -= 1;
+            Game.entities.background.defaultCursor = "url(/sources/images/fishhook_tiny.png) 4 30, none";
         }
     },
     select: function (name) {
