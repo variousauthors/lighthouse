@@ -26,8 +26,14 @@ function onUp (e) {
     var shadow_box = new PIXI.Container();
     var briefcase_contents = new PIXI.Container();
     var background = Game.background.init();
+    var background_shadow = Game.background.init();
     var briefcase = Game.briefcase.init();
 
+    var lighthouse_shadow = Game.lighthouse.init();
+    background_shadow.alpha = 0.03;
+    shadow_box.addChild(background_shadow);
+    shadow_box.addChild(lighthouse_shadow);
+    parent.addChild(shadow_box);
     stage.addChild(background);
 
     var title = Game.title.init();
@@ -72,7 +78,6 @@ function onUp (e) {
     Game.foreground = foreground;
 
     var museum = Game.museum.init();
-    var lighthouse_shadow = Game.lighthouse.init();
     var lighthouse_light = Game.lighthouse.init();
     lighthouse_light.alpha = 1;
 
@@ -80,10 +85,8 @@ function onUp (e) {
 
     stage.addChild(lighthouse_light);
 
-    shadow_box.addChild(lighthouse_shadow);
 
     parent.addChild(stage);
-    parent.addChild(shadow_box);
     parent.addChild(museum);
     parent.addChild(GUI);
 
@@ -107,7 +110,7 @@ function onUp (e) {
             Game.tic += 1;
 
             // every fourth tic
-            if ((Game.tic % (Game.light.rate)) == 0) {
+            if ((Game.tic % (Game.light.rate)) == 3) {
                 Game.shuffle = true;
             }
         }

@@ -12,8 +12,8 @@ Game.light = {
     timer: 0,
     init: function () {
         var graphics = new PIXI.Graphics();
-        graphics.position.x = WIDTH/2 + WIDTH/8;
-        graphics.position.y = HEIGHT/2 + HEIGHT/4 + HEIGHT; // adding HEIGHT again to offset for the intro
+        graphics.position.x = 780;
+        graphics.position.y = 863; // adding HEIGHT again to offset for the intro
 
         Game.entities.light = graphics;
 
@@ -21,7 +21,7 @@ Game.light = {
     },
     update: function (dt) {
         Game.light.timer += (dt / Game.light.rate) % 1;
-        var theta = Game.light.timer*(2*Math.PI) + Math.PI;
+        var theta = Game.light.timer*(2*Math.PI) + (7/8)*Math.PI;
         var arc = Math.PI/6;
         var light = Game.entities.light;
 
@@ -56,11 +56,14 @@ Game.background = {
 }
 Game.lighthouse = {
     init: function () {
-        var lighthouse = new PIXI.Sprite.fromImage('sources/images/lighthouse.png');
+        var lighthouse = new PIXI.Sprite.fromImage('sources/images/briefcase_top.png');
 
-        lighthouse.x = 270;
-        lighthouse.y = 235 + HEIGHT ;
-        lighthouse.alpha = 0.3;
+        // magic numbers to line up with the briefcase_bottom
+        lighthouse.x = 474;
+        lighthouse.y = 743;
+        lighthouse.alpha = 0.6;
+
+        Game.entities.lighthouse = lighthouse;
 
         return lighthouse;
     }
@@ -316,7 +319,7 @@ Game.intro = {
         loop: true
     }),
     playing: true,
-    timer: -5,
+    timer: -7,
     start: false,
     update: function (dt) {
         var briefcase;
@@ -344,8 +347,8 @@ Game.intro = {
             }
 
             briefcase = Game.entities.briefcase;
-            if (briefcase.position.y > (HEIGHT - 240)) {
-                briefcase.position.set(briefcase.position.x, briefcase.position.y - 110*dt);
+            if (briefcase.position.y > (HEIGHT - 200)) {
+                briefcase.position.set(briefcase.position.x, briefcase.position.y - 100*dt);
             }
             if (briefcase.position.x < -60) {
                 briefcase.position.set(briefcase.position.x + 100*dt, briefcase.position.y);
@@ -358,13 +361,13 @@ Game.intro = {
 
 Game.briefcase = {
     weight: 0,
-    capacity: 2,
+    capacity: 3,
     sprites: {},
     init: function () {
-        var briefcase = new PIXI.Sprite.fromImage('sources/images/briefcase_small.png');
+        var briefcase = new PIXI.Sprite.fromImage('sources/images/briefcase_bottom.png');
         // set a fill and a line style again and draw a rectangle
-        briefcase.y = 2*HEIGHT - 240;
-        briefcase.x = -500;
+        briefcase.y = 2*HEIGHT - 200;
+        briefcase.x = WIDTH - 550;
 
         Game.entities.briefcase = briefcase;
 
@@ -445,7 +448,7 @@ Game.briefcase = {
             if (debris !== undefined && Game.sprites[object.name].visible === false) {
                 if (object.visible) {
                     // add the object to the briefcase display
-                    object.position.set(20 + offset_x, HEIGHT - (object.height + 20));
+                    object.position.set(WIDTH - 540 + offset_x, HEIGHT - (object.height + 100));
                     offset_x += object.width + 10;
 
                 }
