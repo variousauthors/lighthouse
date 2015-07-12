@@ -4,8 +4,8 @@ var RADIUS = 1300;
 
 // produces an (x, y) on the screen, above the lighthouse
 function randomPosition () {
-    var x = Math.random() * (WIDTH - 100);
-    var y = Math.random() * (HEIGHT - HEIGHT/3) + HEIGHT; // offset by HEIGHT because of the intro
+    var x = Math.random() * (WIDTH - 400);
+    var y = Math.random() * (HEIGHT - 100) + HEIGHT + 100; // offset by HEIGHT because of the intro
 
     return [x, y];
 }

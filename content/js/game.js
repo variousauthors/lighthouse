@@ -448,7 +448,7 @@ Game.briefcase = {
             if (debris !== undefined && Game.sprites[object.name].visible === false) {
                 if (object.visible) {
                     // add the object to the briefcase display
-                    object.position.set(WIDTH - 540 + offset_x, HEIGHT - (object.height + 100));
+                    object.position.set(Game.entities.briefcase.x + 130 + offset_x, HEIGHT - (object.height + 60));
                     offset_x += object.width + 10;
 
                 }
