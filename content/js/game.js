@@ -43,7 +43,7 @@ Game.light = {
 }
 Game.background = {
     init: function () {
-        var ocean = new PIXI.Sprite.fromImage('sources/images/ocean.png');
+        var ocean = new PIXI.Sprite.fromImage('sources/images/c_ocean.png');
         // set a fill and a line style again and draw a rectangle
 
         Game.entities.background = ocean;
