@@ -15,7 +15,7 @@ function onUp (e) {
 
 }
 
-(function () {
+window.onload = function () {
     var renderer = PIXI.autoDetectRenderer(WIDTH, HEIGHT, { antialias: true });
     document.getElementById("container").appendChild(renderer.view);
 
@@ -133,5 +133,5 @@ function onUp (e) {
     // every time the light passes behind the lighthouse, shuffle all objects
 
     animate();
-}());
+};
 
