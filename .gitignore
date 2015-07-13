@@ -2,3 +2,6 @@ crash.log
 output/
 tmp/
 .sass-cache/
+
+content/sources/images/originals/
+content/sources/images/uncompressed/

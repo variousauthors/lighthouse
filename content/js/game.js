@@ -56,7 +56,7 @@ Game.background = {
 }
 Game.lighthouse = {
     init: function () {
-        var lighthouse = new PIXI.Sprite.fromImage('sources/images/briefcase_top.png');
+        var lighthouse = new PIXI.Sprite.fromImage('sources/images/c_briefcase_top.png');
 
         // magic numbers to line up with the briefcase_bottom
         lighthouse.x = 474;
@@ -71,7 +71,7 @@ Game.lighthouse = {
 
 Game.title = {
     init: function () {
-        var title = new PIXI.Sprite.fromImage('sources/images/conch_small.png');
+        var title = new PIXI.Sprite.fromImage('sources/images/c_conch_small.png');
 
         title.x = 150;
         Game.entities.title = title;
@@ -83,7 +83,7 @@ Game.title = {
 function Debris (name, ear_x, ear_y) {
     this.name = name;
     this.text = this.name + "TEXT";
-    this.audio = null;
+    this._audio = null;
     this.ear_x = ear_x;
     this.ear_y = ear_y;
 }
@@ -120,10 +120,10 @@ Debris.prototype = {
                 Game.splash.play();
 
                 if (Game.selected && Game.selected === Game.debris[name]) {
-                    Game.selected.audio.fadeOut(0.0, 3000, function () {
+                    Game.selected.audio().fadeOut(0.0, 3000, function () {
                         this.volume(1);
                         this.stop();
-                    }.bind(Game.selected.audio));
+                    }.bind(Game.selected.audio()));
                 }
             }
 
@@ -185,12 +185,13 @@ Debris.prototype = {
         Game.briefcase.sprites[this.name].buttonMode = false;
         Game.briefcase.sprites[this.name].defaultCursor = "grab";
 
-        this.audio = new Howl({
+        return Game.sprites[this.name];
+    },
+    audio: function () {
+        return this._audio || (this._audio = new Howl({
             volume: 0.7,
             urls: [ 'sources/audio/mp3/' + this.name + '.mp3', 'sources/audio/ogg/' + this.name + '.ogg' ]
-        });
-
-        return Game.sprites[this.name];
+        }));
     }
 }
 
@@ -364,7 +365,7 @@ Game.briefcase = {
     capacity: 3,
     sprites: {},
     init: function () {
-        var briefcase = new PIXI.Sprite.fromImage('sources/images/briefcase_bottom.png');
+        var briefcase = new PIXI.Sprite.fromImage('sources/images/c_briefcase_bottom.png');
         // set a fill and a line style again and draw a rectangle
         briefcase.y = 2*HEIGHT - 200;
         briefcase.x = WIDTH - 550;
@@ -407,16 +408,16 @@ Game.briefcase = {
         Game.selected = Game.debris[name];
         Game.entities.information.text = Game.selected.text;
 
-        if (Game.selected.audio !== undefined && Game.selected.audio._activeNode() === null) {
-            Game.selected.audio.play();
+        if (Game.selected.audio() !== undefined && Game.selected.audio()._activeNode() === null) {
+            Game.selected.audio().play();
         }
     },
     deselect: function () {
-        if (Game.selected.audio !== undefined) {
-            Game.selected.audio.fadeOut(0.0, 3000, function () {
+        if (Game.selected.audio() !== undefined) {
+            Game.selected.audio().fadeOut(0.0, 3000, function () {
                 this.volume(1);
                 this.stop();
-            }.bind(Game.selected.audio));
+            }.bind(Game.selected.audio()));
         }
 
         Game.selected = null;
