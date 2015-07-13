@@ -25,8 +25,8 @@ function onUp (e) {
     var parent = new PIXI.Container();
     var shadow_box = new PIXI.Container();
     var briefcase_contents = new PIXI.Container();
-    var background = Game.background.init();
     var background_shadow = Game.background.init();
+    var background = Game.background.init();
     var briefcase = Game.briefcase.init();
 
     var lighthouse_shadow = Game.lighthouse.init();

@@ -119,7 +119,7 @@ Debris.prototype = {
             } else {
                 Game.splash.play();
 
-                if (Game.selected) {
+                if (Game.selected && Game.selected === Game.debris[name]) {
                     Game.selected.audio.fadeOut(0.0, 3000, function () {
                         this.volume(1);
                         this.stop();
@@ -386,6 +386,7 @@ Game.briefcase = {
         }
 
         if (Game.briefcase.weight === Game.briefcase.capacity) {
+            console.log("full", Game.briefcase.capacity);
             Game.entities.background.defaultCursor = "url(/sources/images/conch_tiny.png) 30 20, none";
         }
     },
@@ -394,6 +395,7 @@ Game.briefcase = {
         if (Game.debris[name] === undefined) { return false; }
 
         if (Game.briefcase.weight > 0) {
+            console.log("light", Game.briefcase.capacity);
             Game.briefcase.sprites[name].visible = false;
             Game.briefcase.weight -= 1;
             Game.entities.background.defaultCursor = "url(/sources/images/fishhook_tiny.png) 4 30, none";
