@@ -1,5 +1,10 @@
 @import 'custom.css.scss';
 
+body:after {
+  content: url(sources/images/c_ocean.png) url(sources/images/c_conch_small.png) url(sources/images/book_small.png);
+  display: none;
+}
+
 body {
     background-image: url('/sources/images/c_dark_water.jpg');
 }
