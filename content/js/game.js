@@ -80,6 +80,73 @@ Game.title = {
     }
 }
 
+Game.title_text = {
+    start_x: 50,
+    start_y: 100,
+    text: [
+        "I want you to listen",
+        "To the fished memories",
+        "From the waterchest",
+        "Hold them tight or",
+        "Let them go light",
+        "I lost my tongue so",
+        "I drop my saliva into your earhole"
+    ],
+    lines: [],
+    init: function init () {
+        var title_text = new PIXI.Container();
+        var lines = Game.title_text.lines;
+
+        var style = {
+            // font : 'bold italic 36px Arial',
+            fill : '#F7EDCA',
+            // stroke : '#4a1850',
+            strokeThickness : 5,
+            dropShadow : true,
+            dropShadowColor : '#000000',
+            dropShadowAngle : Math.PI / 6,
+            dropShadowDistance : 6,
+            wordWrap : true,
+            wordWrapWidth : 440
+        };
+
+        for (var i = 0; i < Game.title_text.text.length; i++) {
+            var line = Game.title_text.text[i];
+            var pixi_line = new PIXI.Text(line, style);
+
+            pixi_line.x = Game.title_text.start_x;
+            pixi_line.y = Game.title_text.start_y + 40*i;
+            pixi_line.alpha = 0;
+
+            lines[i] = pixi_line;
+
+            title_text.addChild(pixi_line);
+        }
+
+        Game.entities.title_text = title_text;
+
+        return title_text;
+    },
+    magnify: 0,
+    update: function update (dt) {
+        var lines = Game.title_text.lines;
+        var magnify = Game.title_text.magnify;
+
+        if (Game.intro.timer < 0 && magnify < 1) {
+            Game.title_text.magnify = Math.min(magnify + dt/2, 1);
+        } else {
+            Game.title_text.magnify = Math.max(magnify - dt/2, 0);
+        }
+
+        for (var i = 0; i < lines.length; i++) {
+            var line = lines[i];
+
+            line.alpha = magnify*Math.abs(Math.sin(Game.light.timer*2*Math.PI - (((i + 4) % lines.length)/lines.length)*Math.PI));
+        }
+
+    }
+}
+
 function Debris (name, ear_x, ear_y) {
     this.name = name;
     this.text = this.name + "TEXT";
@@ -324,6 +391,9 @@ Game.intro = {
     start: false,
     update: function (dt) {
         var briefcase;
+        var title_text = Game.title_text;
+
+        title_text.update(dt);
 
         if (Game.intro.timer < 0) {
             // wait
@@ -348,6 +418,7 @@ Game.intro = {
             }
 
             briefcase = Game.entities.briefcase;
+
             if (briefcase.position.y > (HEIGHT - 200)) {
                 briefcase.position.set(briefcase.position.x, briefcase.position.y - 100*dt);
             }

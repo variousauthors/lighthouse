@@ -25,6 +25,7 @@ window.onload = function () {
     var parent = new PIXI.Container();
     var shadow_box = new PIXI.Container();
     var briefcase_contents = new PIXI.Container();
+
     var background_shadow = Game.background.init();
     var background = Game.background.init();
     var briefcase = Game.briefcase.init();
@@ -37,7 +38,9 @@ window.onload = function () {
     stage.addChild(background);
 
     var title = Game.title.init();
+    var title_text = Game.title_text.init();
     stage.addChild(title);
+    GUI.addChild(title_text);
 
     // make a beam of light
     var light = Game.light.init();
